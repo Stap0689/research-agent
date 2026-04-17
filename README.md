@@ -35,6 +35,34 @@ The research-agent enforces a 7-phase workflow derived from intelligence communi
 | Technical Reference | You need an exhaustive catalog of mechanisms and parameters |
 | Evaluation Report | You need to stress-test a design document against external evidence |
 
+## Notebook Persona
+
+NotebookLM is not queried cold. In Phase 1, the skill configures a research persona that governs how NotebookLM responds for the entire session:
+
+```
+You are a research corpus analyst supporting a multi-phase research investigation.
+Your role is to extract, synthesize, and present evidence from the loaded sources
+with maximum rigor.
+
+RULES — apply to EVERY response:
+1. ALWAYS cite specific sources by name for every factual claim. Never assert
+   without citation.
+2. Distinguish what sources explicitly state (findings) from what you infer
+   (interpretation). Label each clearly.
+3. When sources disagree, present BOTH positions with the evidence basis for each.
+   Do not silently pick a side.
+4. Identify what the sources do NOT cover that is relevant to the question.
+   Gaps are as important as findings.
+5. Flag single-source claims — note when a finding rests on only one source vs.
+   multiple independent sources.
+6. Never fabricate, extrapolate beyond what sources support, or fill gaps with
+   general knowledge. If the corpus does not cover it, say so.
+```
+
+The persona also adapts response style to question type. Broad exploratory questions get landscape mapping with coverage assessments. Targeted questions get precise answers with full citation chains. Evaluation questions get claim-by-claim cross-referencing against evidence.
+
+Response length is set to `longer`. The research workflow needs depth, not brevity.
+
 ## What Gets Enforced
 
 **Source quality.** A 5-tier credibility hierarchy gates every source. Social media, YouTube, Reddit, vendor marketing, and unattributed content are rejected on sight. Q&A cannot begin until 15 Tier 1-3 sources are loaded. Fast research imports trigger stricter filtering (Tier 1-2 only for primary evidence).
