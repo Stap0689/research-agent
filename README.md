@@ -1,8 +1,12 @@
+<div align="center">
+
+<img src="assets/hero.png" alt="Research Agent" />
+
 # Research Agent
 
-![Research Agent](assets/hero.png)
-
 Claude Code skills for structured, evidence-based research using Google NotebookLM as the corpus engine.
+
+</div>
 
 ## The Problem
 
