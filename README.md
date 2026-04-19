@@ -1,5 +1,7 @@
 # Research Agent
 
+![Research Agent](assets/hero.png)
+
 Claude Code skills for structured, evidence-based research using Google NotebookLM as the corpus engine.
 
 ## The Problem
