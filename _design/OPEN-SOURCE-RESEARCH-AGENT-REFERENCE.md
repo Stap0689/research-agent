@@ -61,7 +61,7 @@ This repository is a skills distribution — markdown + assets only, no runtime 
 | Top-level control-plane/, pipeline/, observability/ directories | Not created | No runtime code to organize — this is a skills-only repo |
 | .claude/settings.json with local harness hook | Not created | `~/projects/.harness/` is private; public repo must not depend on it |
 | CLAUDE.md | Not created | Repo is consumed as skills by end users, not developed as a code project |
-| Plan folders + handoffs under _design/project/ | Seeded empty | Reserved for future contribution process; not yet in use |
+| Plan folders + handoffs under _design/plans/ | Seeded empty | Reserved for future contribution process; not yet in use |
 
 ---
 
