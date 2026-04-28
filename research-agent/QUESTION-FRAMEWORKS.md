@@ -103,6 +103,29 @@ Phase 3A questions discover. Phase 3B questions test. Phase 3C questions apply.
 
 ---
 
+## DA Round Expansion Policy
+
+After the standard 5 rounds (R1-R5), every research session adds mandatory Devil's Advocate rounds. Round type definitions and their analytic purposes are in the DA Round Type Catalog in BIAS-PREVENTION.md.
+
+### Tier Selection
+
+| Tier | DA Rounds | Required Types | When |
+|:-----|:----------|:---------------|:-----|
+| **Minimum** | 3 | Steelman + Multi-Bias Audit + Alexander's Question | ALL research, no exceptions |
+| **Standard** | 5 | Minimum + Logical Fallacy Detection + Verification Protocol | Research that informs real-world decisions |
+| **Extended** | 8 | Full catalog | Vendor claims, adversarial parties, or high-stakes operational decisions |
+
+The catalog is a floor, not a ceiling. The user can always request additional rounds beyond the tier requirement.
+
+### Tier Escalation Rules
+
+- Default to Minimum unless the research context triggers Standard or Extended.
+- If any source is a vendor or party with financial/reputational interest in the outcome, escalate to Extended.
+- If the findings will be presented to decision-makers or used to justify operational action, escalate to at least Standard.
+- When in doubt, escalate. The cost of an unnecessary DA round is minutes; the cost of a missed bias is a flawed conclusion.
+
+---
+
 ## Output Mode Question Overlays
 
 When an output mode is active (set in Phase 0 of SKILL.md), add these question types to the phase-appropriate rounds. These supplement the standard question instruments, they do not replace them.

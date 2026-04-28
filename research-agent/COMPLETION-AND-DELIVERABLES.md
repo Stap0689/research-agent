@@ -37,7 +37,7 @@ In time-sensitive situations, research may be declared actionably complete befor
 
 ## Deliverable Format — The Analytic Pyramid
 
-All research outputs follow this 10-section structure. Every section must contain real content. No placeholder text. No omissions.
+All research outputs follow this 11-section structure. Every section must contain real content. No placeholder text. No omissions.
 
 ### Section 1: Problem Statement
 One to two sentences. A clear, unbiased definition of the core question or decision being addressed. Does not contain the answer.
@@ -86,11 +86,30 @@ All conclusions across three distinct, never-collapsed levels:
 
 Never state a fact as a recommendation. Never state an assumption as a finding.
 
+### Section 11: DA Due Diligence Register
+
+Required in every findings document. One entry per DA round conducted. The register pairs each original theory or claim with its DA finding, creating a structured audit trail of the devil's advocate work.
+
+Format per entry:
+
+```markdown
+### DA-N: [Topic]
+| | Content |
+|:--|:--------|
+| **Original Theory** | [What the subject claims] |
+| **DA Finding** | [What the evidence actually shows] |
+| **Fallacy Identified** | [If any; "None" if clean] |
+| **Sources** | [URLs] |
+| **Steelman Concession** | [What is valid in the original theory] |
+```
+
+The Steelman Concession line is mandatory. It prevents the register from becoming a one-sided prosecution document. If the original theory has no merit whatsoever, state that explicitly with evidence rather than leaving the field blank.
+
 ---
 
 ## Mode Adaptation Table
 
-The Analytic Pyramid 10-section structure applies to all output modes. Modes modify section depth and emphasis, not section existence. Every section must still contain real content, but "real content" scales from a single focused paragraph (compressed) to multiple pages with tables and code blocks (expanded).
+The Analytic Pyramid 11-section structure applies to all output modes. Modes modify section depth and emphasis, not section existence. Every section must still contain real content, but "real content" scales from a single focused paragraph (compressed) to multiple pages with tables and code blocks (expanded).
 
 | Section | Synthesis | Implementation Spec | Decision Brief | Technical Reference | Evaluation Report |
 |---------|-----------|-------------------|----------------|--------------------|--------------------|
@@ -104,6 +123,7 @@ The Analytic Pyramid 10-section structure applies to all output modes. Modes mod
 | 8. Intelligence Gaps | Standard | Adapted — "unknowns an implementer will encounter" | Compressed (top 3 gaps only) | **Expanded** — exhaustive gap catalog | Adapted — gaps that prevent full evaluation |
 | 9. Milestones for Revision | Standard | Adapted — "implementation will fail if..." | Compressed (single revision trigger) | Standard | Adapted — "re-evaluate the subject doc when..." |
 | 10. Findings/Insights/Recs | Standard 3-tier | **Renamed** — see below | **Renamed** — see below | Standard 3-tier (exhaustive) | **Renamed** — see below |
+| 11. DA Due Diligence Register | Standard | Standard | Standard | Standard | Standard |
 
 ### Section 10 — Mode-Specific Level Definitions
 

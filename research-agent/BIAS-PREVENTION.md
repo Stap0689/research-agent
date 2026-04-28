@@ -91,6 +91,21 @@ Model the actual incentive structure and cultural norms of the subject. The ques
 - Avoid smugness — the goal is genuine reflection, not better defense of an entrenched position
 - If working solo, explicitly shift cognitive mode before Phase 1; do not begin the devil's advocate immediately after finishing the main analysis
 
+### DA Round Type Catalog
+
+The catalog defines composable round types for DA batteries. Rounds marked ALWAYS form the mandatory floor. Context-dependent rounds are added per the DA Round Expansion Policy in QUESTION-FRAMEWORKS.md.
+
+| Round Type | Purpose | When Mandatory |
+|:-----------|:--------|:---------------|
+| Logical Fallacy Detection | Identify formal fallacies in claims being evaluated | When evaluating vendor/external party claims |
+| Red Hat / Incentive Analysis | Model the incentive structure of the subject actor | When recommendation comes from party with financial/reputational interest |
+| Steelman | Present strongest possible version of opposing argument | ALWAYS (confirmation bias prevention) |
+| Fix-by-Fix Separation | Granular valid/invalid verdict per recommendation in bundle | When evaluating 2+ recommendations |
+| Architectural Fragility | Assess whether problem is environmental or design-level | When proposed fix is environmental and failure mode is architectural |
+| Multi-Bias Audit | Check for availability heuristic, anchoring, mirror imaging | ALWAYS (mandatory bias gate before synthesis) |
+| Alexander's Question | Define what evidence would overturn the conclusion | ALWAYS (Gate 6 requirement, dedicated round) |
+| Verification Protocol | Exact diagnostic steps to collect definitive evidence | When findings inform real-world decisions with operational consequences |
+
 ---
 
 ## Premortem Analysis
