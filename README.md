@@ -27,7 +27,7 @@ The research-agent enforces a 7-phase workflow derived from intelligence communi
 | 2. Expansion | Targeted queries to fill gaps. Each import triggers dedup guard and source audit |
 | 3. Research Journey | Three sub-phases: Exploratory (map the territory), Crystallization (test with falsification), Application (apply to target context) |
 | 4. Synthesis | NotebookLM produces a structured summary shaped by the output mode |
-| 5. Findings Document | 10-section Analytic Pyramid with calibrated confidence, intelligence gaps, falsification record |
+| 5. Findings Document | 11-section Analytic Pyramid with calibrated confidence, intelligence gaps, falsification record, DA due diligence register |
 | 6. Completion Gates | Six gates. Methodological veracity, survival of disconfirmation, linchpin stability, consensus through dissent, calibrated confidence, falsifiability commitment |
 | 7. Delivery | Findings document written to disk, notebook index updated for cross-topic tracking |
 
@@ -73,11 +73,11 @@ Response length is set to `longer`. The research workflow needs depth, not brevi
 
 **Source quality.** A 5-tier credibility hierarchy gates every source. Social media, YouTube, Reddit, vendor marketing, and unattributed content are rejected on sight. Q&A cannot begin until 15 Tier 1-3 sources are loaded. Fast research imports trigger stricter filtering (Tier 1-2 only for primary evidence).
 
-**Bias countermeasures.** Five named biases (confirmation, satisficing, anchoring, availability heuristic, mirror imaging) each have a structural intervention. Analysis of Competing Hypotheses, devil's advocate protocol, premortem analysis, and red hat analysis run during synthesis. These are not optional checks.
+**Bias countermeasures.** Five named biases (confirmation, satisficing, anchoring, availability heuristic, mirror imaging) each have a structural intervention. Analysis of Competing Hypotheses, devil's advocate protocol, premortem analysis, and red hat analysis run during synthesis. These are not optional checks. A DA Round Type Catalog defines 8 composable round types (logical fallacy detection, incentive analysis, steelman, fix-by-fix separation, architectural fragility, multi-bias audit, Alexander's question, verification protocol) that are assembled into batteries based on research stakes.
 
-**Question rigor.** A 5-round depth escalation ladder moves from parameter definition (starbursting) through structural decomposition, falsification probing, cognitive reframing, and metacognitive critique. Phase 3A discovers. Phase 3B tests. Phase 3C applies.
+**Question rigor.** A 5-round depth escalation ladder moves from parameter definition (starbursting) through structural decomposition, falsification probing, cognitive reframing, and metacognitive critique. Phase 3A discovers. Phase 3B tests. Phase 3C applies. After the standard 5 rounds, a mandatory DA round expansion adds full Q&A phases: minimum 3 (all research), standard 5 (decision-informing), or extended 8 (vendor claims, adversarial parties, high-stakes operations).
 
-**Completion standards.** Six gates must pass before research is declared complete. Gate 2 (survival of disconfirmation) cannot be skipped. Findings, insights, and recommendations are three distinct levels that are never collapsed into a single list.
+**Completion standards.** Six gates must pass before research is declared complete. Gate 2 (survival of disconfirmation) cannot be skipped. Findings, insights, and recommendations are three distinct levels that are never collapsed into a single list. Every findings document includes a DA Due Diligence Register pairing each original theory with its DA finding, identified fallacies, and a mandatory steelman concession.
 
 ## Application Context
 
@@ -117,10 +117,10 @@ A `notebook-index.json` file tracks all research notebooks, their output modes, 
 ```
 research-agent/
   SKILL.md                        Main skill: phase orchestration, autonomy rules, data handling
-  BIAS-PREVENTION.md              5 cognitive biases, devil's advocate, premortem
-  COMPLETION-AND-DELIVERABLES.md  6 completion gates, Analytic Pyramid, confidence language
+  BIAS-PREVENTION.md              5 cognitive biases, devil's advocate, DA round type catalog, premortem
+  COMPLETION-AND-DELIVERABLES.md  6 completion gates, 11-section Analytic Pyramid, DA due diligence register, confidence language
   NOTEBOOKLM-INTEGRATION.md      CLI reference, rate limits, timeout recovery, note conventions
-  QUESTION-FRAMEWORKS.md          5-round depth ladder, AIMS scoping, phase-question mapping
+  QUESTION-FRAMEWORKS.md          5-round depth ladder, DA round expansion policy, AIMS scoping, phase-question mapping
   SOURCE-QUALITY.md               5-tier hierarchy, SIFT method, triangulation, acceptance criteria
 
 notebooklm/
