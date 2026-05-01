@@ -106,7 +106,7 @@ If any sub-topic is thin or uncovered, execute the remediation sequence below.
 ```bash
 notebooklm ask "Are there redundant sources in this notebook — multiple sources covering the same paper, the same study, or nearly identical content? List any duplicates or near-duplicates by source ID and explain the overlap." --save-as-note --notebook <ID>
 ```
-Delete exact duplicates. Exclude (not delete) any Tier 4-5 sources that slipped through prior pruning — use `-x` on subsequent queries.
+Delete exact duplicates. Delete any Tier 4-5 sources that slipped through prior pruning.
 Recount: **[new total] / 100**.
 
 **Step 2 — Assess remaining headroom:**
@@ -139,7 +139,7 @@ The Research Findings Document must note: "Source corpus split across [N] notebo
 
 ### Multi-Topic Source Juggling — Single Notebook, Multiple Focus Areas
 
-When a research task has multiple sub-topics that share some sources but not all, use source filtering (`-s` / `-x`) to dynamically scope queries per topic instead of splitting into separate notebooks. This is faster than notebook splits, avoids re-adding shared sources, and keeps everything in one place.
+When a research task has multiple sub-topics that share some sources but not all, use topic-scoped questions and pre-Q&A source pruning to focus queries per topic within a single notebook. This avoids notebook splits when topics share significant source overlap.
 
 **Step 1 — Topic tagging during source audit:**
 Extend the standard source audit question to also assign each source to one or more topic tags:
@@ -147,37 +147,32 @@ Extend the standard source audit question to also assign each source to one or m
 notebooklm ask "Audit every source in this notebook. For each source list: (1) source ID, (2) title, (3) Tier 1-5 rating, (4) which of these research sub-topics it is relevant to: [TOPIC_A], [TOPIC_B], [TOPIC_C]. A source can belong to multiple topics. Output a grouped list: for each topic, list the source IDs that belong to it." --save-as-note --notebook <ID>
 ```
 
-**Step 2 — Build topic source groups:**
-Parse the audit response and build shell variables for each topic group. Use `-s` (include) for focused queries, `-x` (exclude) for broad queries minus irrelevant sources. Choose whichever is shorter for the command.
+**Step 2 — Delete off-topic and low-quality sources:**
+After the audit, delete all Tier 5 and hard-reject sources from the notebook. This is the primary filtering mechanism since bad sources cannot be excluded at query time.
 ```bash
-# Include lists (for focused topic queries)
-TOPIC_A="-s id1 -s id2 -s id5 -s id8"
-TOPIC_B="-s id3 -s id4 -s id6 -s id9"
-TOPIC_C="-s id2 -s id5 -s id7 -s id10"
-SHARED="-s id2 -s id5"
-
-# Quality exclusions (always applied, from source audit)
-EXCLUDE="-x bad1 -x bad2"
+# Delete every Tier 5, social media, Reddit, YouTube, vendor marketing source
+notebooklm source delete <bad_id_1> --yes --notebook <ID>
+notebooklm source delete <bad_id_2> --yes --notebook <ID>
 ```
 
 **Step 3 — Scoped Q&A per topic:**
-Run each topic's Q&A phase using only its relevant sources:
+Scope each topic's Q&A phase through question specificity. NotebookLM's retrieval focuses on relevant sources when the question is precise:
 ```bash
-# Topic A questions — only Topic A sources, excluding bad ones
-notebooklm ask "Q1 about topic A" $TOPIC_A $EXCLUDE --notebook <ID>
-notebooklm ask "Q2 about topic A" $TOPIC_A $EXCLUDE --notebook <ID>
+# Topic A questions — question text drives retrieval focus
+notebooklm ask "Focusing specifically on [TOPIC_A]: Q1 about topic A" --notebook <ID>
+notebooklm ask "Focusing specifically on [TOPIC_A]: Q2 about topic A" --notebook <ID>
 
-# Topic B questions — switch to Topic B sources
-notebooklm ask "Q1 about topic B" $TOPIC_B $EXCLUDE --notebook <ID>
+# Topic B questions — same notebook, different retrieval focus
+notebooklm ask "Focusing specifically on [TOPIC_B]: Q1 about topic B" --notebook <ID>
 
-# Cross-topic questions — use all sources (just apply exclusions)
-notebooklm ask "How do topics A and B relate?" $EXCLUDE --notebook <ID>
+# Cross-topic questions — no scoping, full corpus
+notebooklm ask "How do topics A and B relate?" --notebook <ID>
 ```
 
 **Step 4 — Cross-topic synthesis:**
-After completing per-topic Q&A, run synthesis questions against all sources (minus quality exclusions) to find connections:
+After completing per-topic Q&A, run synthesis questions against the full corpus to find connections:
 ```bash
-notebooklm ask "Synthesize findings across [TOPIC_A], [TOPIC_B], and [TOPIC_C]. What patterns, contradictions, or gaps emerge when comparing across these sub-topics?" $EXCLUDE --save-as-note --notebook <ID>
+notebooklm ask "Synthesize findings across [TOPIC_A], [TOPIC_B], and [TOPIC_C]. What patterns, contradictions, or gaps emerge when comparing across these sub-topics?" --save-as-note --notebook <ID>
 ```
 
 **When to use juggling vs. notebook split:**
@@ -185,7 +180,7 @@ notebooklm ask "Synthesize findings across [TOPIC_A], [TOPIC_B], and [TOPIC_C]. 
 - **Split** when sources exceed the 100 ceiling or topics are completely independent with no shared sources
 - **Hybrid**: juggle within a notebook, split across notebooks only when ceiling forces it
 
-**Important:** The Research Findings Document must note which source groups anchored which sections: "Topic A findings based on sources [IDs]. Topic B findings based on sources [IDs]. Cross-topic synthesis used full corpus minus exclusions."
+**Important:** The Research Findings Document must note which source groups anchored which sections: "Topic A findings based on sources [IDs]. Topic B findings based on sources [IDs]. Cross-topic synthesis used full corpus."
 
 ---
 
@@ -280,10 +275,11 @@ After every `research wait --import-all`, immediately run this before the next q
 ```bash
 notebooklm ask "Audit every source currently in this notebook. For each source list: (1) full title and domain, (2) source type — peer-reviewed paper / academic preprint / government or standards document / established technical publication / news article / blog / social media / vendor marketing / other, (3) named author and institution if visible, (4) Tier 1–5 rating. Then explicitly list the IDs of any sources to exclude: social media, Reddit, YouTube, TikTok, unattributed content, vendor marketing without disclosed methodology, or Tier 5." --save-as-note --notebook <ID>
 ```
-Parse the response. **Exclude** flagged sources from all subsequent queries using `-x` (do not delete — exclusion is faster, reversible, and enables multi-topic source juggling):
+Parse the response. **Delete** all flagged sources (Tier 5, hard-reject categories) from the notebook:
 ```bash
-# All subsequent ask/generate commands pass -x for each excluded source:
-notebooklm ask "your question" -x <bad_id_1> -x <bad_id_2> --notebook <ID>
+# Delete every flagged source — social media, Reddit, YouTube, vendor marketing, Tier 5
+notebooklm source delete <bad_id_1> --yes --notebook <ID>
+notebooklm source delete <bad_id_2> --yes --notebook <ID>
 ```
 For exact duplicates (same paper, same content), **delete** them to free source slots:
 ```bash
@@ -294,17 +290,13 @@ If corpus is thin after pruning (< 15 Tier 1–3 sources), add targeted URLs:
 notebooklm source add "https://specific-quality-source.com" --notebook <ID>
 ```
 
-**Maintaining the exclude list:** Track excluded source IDs in a shell variable or note for the session. Pass them to every `ask` and `generate` command. Example:
-```bash
-EXCLUDE="-x abc123 -x def456 -x ghi789"
-notebooklm ask "your question" $EXCLUDE --notebook <ID>
-```
+**Note:** Deletion is permanent. If you later need a deleted source, re-add it with `source add`. Prioritize aggressive pruning — a clean corpus produces better Q&A than a large one with noise.
 
 ### Pre-Q&A Corpus Gate — Final Check Before Phase 3
 ```bash
-notebooklm ask "Final corpus validation before Q&A. State: (1) total source count, (2) tier distribution — how many Tier 1, 2, 3, 4, 5, (3) are there any remaining sources from social media, video platforms, Reddit, unattributed blogs, or vendor marketing? List any that remain. (4) Is the corpus sufficient to support rigorous Q&A on this topic?" $EXCLUDE --save-as-note --notebook <ID>
+notebooklm ask "Final corpus validation before Q&A. State: (1) total source count, (2) tier distribution — how many Tier 1, 2, 3, 4, 5, (3) are there any remaining sources from social media, video platforms, Reddit, unattributed blogs, or vendor marketing? List any that remain. (4) Is the corpus sufficient to support rigorous Q&A on this topic?" --save-as-note --notebook <ID>
 ```
-**If any hard-reject sources are still present: add them to the exclude list. If Tier 1–3 count < 15: add sources. Only then proceed to Phase 3.**
+**If any hard-reject sources are still present: delete them. If Tier 1–3 count < 15: add sources. Only then proceed to Phase 3.**
 
 **For evaluation tasks — additional gate:** Count only external research sources toward the minimum. The subject document (design spec, architecture doc, or any document provided for evaluation) does not count. If removing the subject document leaves fewer than 15 Tier 1–3 sources, the corpus is not ready. Do not begin Q&A.
 
@@ -458,7 +450,7 @@ notebooklm research wait --import-all --timeout 600 --notebook <ID>
 ```
 → **Run Import Dedup Guard immediately** (see ⛔ IMPORT DEDUP GUARD section). Record pre/post source counts, evaluate delta, run emergency dedup if needed.
 → If `research wait --import-all` times out: **check `source list` before anything else.** Partial imports frequently succeed even when the wait command times out. If sources are present, run the audit on what imported and proceed. If zero sources, treat as a failure. See NOTEBOOKLM-INTEGRATION.md for full recovery protocol.
-→ **Run Source Audit immediately** (see ⛔ enforcement section above). Exclude rejects via `-x`. Delete only exact duplicates. Fill gaps.
+→ **Run Source Audit immediately** (see ⛔ enforcement section above). Delete rejects and exact duplicates. Fill gaps.
 
 ### Phase 2 — Targeted Source Expansion
 Sequence queries — do not run in parallel. After each import, run the full audit cycle before starting the next query. Number of queries depends on topic breadth — not fixed at 2-3.
@@ -469,7 +461,7 @@ For each query:
   2. source add-research "query" --mode deep --notebook <ID>
   3. research wait --import-all --timeout 600 --notebook <ID>
   4. Run Import Dedup Guard → check delta → emergency dedup if needed
-  5. Run Source Audit → exclude rejects via `-x` → delete only exact duplicates → fill gaps if thin
+  5. Run Source Audit → delete rejects and exact duplicates → fill gaps if thin
   6. Complete ALL deletions before starting the next query or any Q&A
   7. Only then start the next query
 ```
